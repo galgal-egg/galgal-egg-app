@@ -18,6 +18,9 @@
             <button v-on:click="addTodo(day)">
               追加
             </button>
+            <button v-on:click="deleteTodo(day)">
+                delete
+            </button>
             <p
               v-for="attr in attributes"
               :key="attr.key"
@@ -60,6 +63,9 @@ export default {
       console.log(todo)
       console.log(day)
     },
+    deleteTodo(day){
+        this.todo.dates.splice(day, 1)
+    }
   },
   watch: {
     attributes: {
