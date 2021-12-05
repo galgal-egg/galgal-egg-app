@@ -5,7 +5,7 @@
       <router-link to="/about">About</router-link>|
       <router-link to="/beforeSignIn">before</router-link>|
       <router-link to="/afterSignIn">after</router-link>|
-      <router-link to="/fire">fire</router-link>
+      <router-link to="/fire">firebase</router-link>
       <button v-if="isLoggin" v-on:click="logOut">ログアウト</button>
       <button v-else v-on:click="logIn">ログイン</button>
     </div>
