@@ -2,18 +2,16 @@
   <div class="todolist">
     <div>
       筋トレリスト
-      <div class="bui">トレーニングする部位：
-          <select v-model="selectedWorkout">
-         <option disabled value="">今日はどこの部位？</option>
-         <option
+      <select v-model="selectedWorkout">
+        <option disabled value="">今日はどこの日？</option>
+        <option
           v-for="workout in optionWorkout"
           v-bind:value="workout.name"
           v-bind:key="workout.id"
         >
           {{ workout.name }}
-         </option>
-         </select>
-      </div>
+        </option>
+      </select>
     </div>
     <div>
       <div v-if="todos">
@@ -29,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div class="syumoku">
+    <div>
       <div>
         種目や回数を入力：
         <input type="text" v-model="inputTodo" />
@@ -39,13 +37,12 @@
     <div class="hansei">
       今日の感想：
       <input type="text" v-model="inputHansei" />
-      <button v-on:click="hozon" class="Hozon">保存</button>
     </div>
+    <button v-on:click="hozon" class="Hozon">保存</button>
   </div>
 </template>
 
 <script>
-import firebase from "firebase";
 export default {
   props: {
     youbi: String
@@ -54,11 +51,11 @@ export default {
     return {
       selectedWorkout: "",
       optionWorkout: [
-        { id: 1, name: "胸" },
-        { id: 2, name: "背中" },
-        { id: 3, name: "肩" },
-        { id: 4, name: "腕" },
-        { id: 5, name: "脚" },
+        { id: 1, name: "胸の日" },
+        { id: 2, name: "背中の日" },
+        { id: 3, name: "肩の日" },
+        { id: 4, name: "腕の日" },
+        { id: 5, name: "脚の日" },
       ],
       inputTodo: "",
       todos: [],
@@ -79,16 +76,8 @@ export default {
     addTodo() {
       if (this.inputTodo !== "") {
         const todo = { text: this.inputTodo, isDone: false }
-        //this.todos.push(todo)
-        firebase.firestore().collection("todos")
-        .add(todo)
-        .then(ref => {
-          this.todos.push({
-            id: ref.todo,
-            ...todo
-          });
-        });
-      };
+        this.todos.push(todo)
+      }
     },
     deleteTodo(index) {
       this.todos.splice(index, 1)
@@ -103,11 +92,7 @@ export default {
         inputHansei: this.inputHansei,
       }
       this.menus.push(menu)
-      //localStorage.menus = JSON.stringify(this.menus)
-      localStorage.setItem("menus", JSON.stringify(this.menus))
-      const art = JSON.parse(localStorage.getItem("menus"))
-      this.menus = art
-
+      localStorage.menus = JSON.stringify(this.menus)
     },
   },
 }
