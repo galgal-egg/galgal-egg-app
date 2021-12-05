@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/about">About</router-link>|
+      <router-link to="/about">保存できない</router-link>|
       <router-link to="/beforeSignIn">before</router-link>|
-      <router-link to="/afterSignIn">after</router-link>|
+      <router-link to="/afterSignIn">いい感じ</router-link>|
       <router-link to="/fire">firebase</router-link>
       <button v-if="isLoggin" v-on:click="logOut">ログアウト</button>
       <button v-else v-on:click="logIn">ログイン</button>

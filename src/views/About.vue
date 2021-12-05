@@ -5,13 +5,15 @@
       <div class="photo">
         <img alt="Vue logo" src="../assets/women.png" />
       </div>
-      <p>身長<input v-model="cm" />cm</p>
+
+      <p>身長<input type="text" v-model="cm" />cm</p>
       <p>体重<input v-model="kg" />kg</p>
       <p>年齢<input v-model="age" />歳</p>
       <button @click="Men">男性</button>
       <button @click="Women">女性</button>
       <p>基礎代謝{{ cal }}cal</p>
       <p>必要水分{{ mL }}mL</p>
+      <button @click="fire">保存</button>
     </div>
     <div class="water">
       必要水分{{ mL }}mL
@@ -41,35 +43,45 @@ export default {
       mL: 0,
     }
   },
-  methods: {
-    Men() {
-      return (
-        (this.cal =
-          this.cm * 4.799 + this.kg * 13.397 + this.age * 5.677 + 88.362),
-        (this.cal = Math.round(this.cal))((this.mL = this.kg * 40))
-      )
+  computed: {
+    user() {
+      return this.$auth.currentUser
     },
-    Women() {
-      return (
-        (this.cal =
-          this.cm * 3.098 + this.kg * 9.247 + this.age * 4.33 + 447.592),
-        (this.cal = Math.round(this.cal))((this.mL = this.kg * 40))
-      )
+    computed: {
+      user() {
+        return this.$auth.currentUser
+      },
     },
-    one() {
-      if (this.mL > 0) {
-        return (this.mL -= 100)
-      }
-    },
-    three() {
-      if (this.mL > 0) {
-        return (this.mL -= 250)
-      }
-    },
-    five() {
-      if (this.mL > 0) {
-        return (this.mL -= 500)
-      }
+    methods: {
+      Men() {
+        return (
+          (this.cal =
+            this.cm * 4.799 + this.kg * 13.397 + this.age * 5.677 + 88.362),
+          (this.cal = Math.round(this.cal))((this.mL = this.kg * 40))
+        )
+      },
+      Women() {
+        return (
+          (this.cal =
+            this.cm * 3.098 + this.kg * 9.247 + this.age * 4.33 + 447.592),
+          (this.cal = Math.round(this.cal))((this.mL = this.kg * 40))
+        )
+      },
+      one() {
+        if (this.mL > 0) {
+          return (this.mL -= 100)
+        }
+      },
+      three() {
+        if (this.mL > 0) {
+          return (this.mL -= 250)
+        }
+      },
+      five() {
+        if (this.mL > 0) {
+          return (this.mL -= 500)
+        }
+      },
     },
   },
 }
