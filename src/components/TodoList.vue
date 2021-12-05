@@ -2,17 +2,18 @@
   <div class="todolist">
     <div>
       筋トレリスト
-      <div class="bui">トレーニングする部位：
-          <select v-model="selectedWorkout">
-         <option disabled value="">今日はどこの部位？</option>
-         <option
-          v-for="workout in optionWorkout"
-          v-bind:value="workout.name"
-          v-bind:key="workout.id"
-        >
-          {{ workout.name }}
-         </option>
-         </select>
+      <div class="bui">
+        トレーニングする部位：
+        <select v-model="selectedWorkout">
+          <option disabled value="">今日はどこの部位？</option>
+          <option
+            v-for="workout in optionWorkout"
+            v-bind:value="workout.name"
+            v-bind:key="workout.id"
+          >
+            {{ workout.name }}
+          </option>
+        </select>
       </div>
     </div>
     <div>
@@ -25,7 +26,9 @@
             {{ index }}:{{ todo.text }}
           </div>
           <div v-else class="todo__text">{{ index }}:{{ todo.text }}</div>
-          <button v-on:click="deleteTodo(index)" class="todo__delete">削除</button>
+          <button v-on:click="deleteTodo(index)" class="todo__delete">
+            削除
+          </button>
         </div>
       </div>
     </div>
@@ -45,10 +48,10 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from "firebase"
 export default {
   props: {
-    youbi: String
+    youbi: String,
   },
   data() {
     return {
@@ -63,14 +66,14 @@ export default {
       inputTodo: "",
       todos: [],
       inputHansei: "",
-      menus: []
+      menus: [],
     }
   },
-  created: function() {
+  created: function () {
     const memo = localStorage.menus
     this.menus = JSON.parse(memo)
-    for(let i = 0; i < this.menus.length; i++){
-      if(this.menus[i].youbi === this.youbi){
+    for (let i = 0; i < this.menus.length; i++) {
+      if (this.menus[i].youbi === this.youbi) {
         this.todos.push(this.menus[i].todos)
       }
     }
@@ -80,15 +83,17 @@ export default {
       if (this.inputTodo !== "") {
         const todo = { text: this.inputTodo, isDone: false }
         //this.todos.push(todo)
-        firebase.firestore().collection("todos")
-        .add(todo)
-        .then(ref => {
-          this.todos.push({
-            id: ref.todo,
-            ...todo
-          });
-        });
-      };
+        firebase
+          .firestore()
+          .collection("todos")
+          .add(todo)
+          .then((ref) => {
+            this.todos.push({
+              id: ref.todo,
+              ...todo,
+            })
+          })
+      }
     },
     deleteTodo(index) {
       this.todos.splice(index, 1)
@@ -107,7 +112,6 @@ export default {
       localStorage.setItem("menus", JSON.stringify(this.menus))
       const art = JSON.parse(localStorage.getItem("menus"))
       this.menus = art
-
     },
   },
 }
