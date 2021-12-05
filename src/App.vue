@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="todo">
-      <TodoList />
+
     </div>
     <div id="nav">
       <router-link to="/">Home</router-link> |
@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import TodoList from "@/components/TodoList.vue"
+
 export default {
   components: {
-    TodoList,
+    
   },
 }
 </script>

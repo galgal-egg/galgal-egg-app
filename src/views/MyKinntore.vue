@@ -1,16 +1,16 @@
 <template>
-  <div class="calendar">
-    <Calender />
+  <div class="TodoList">
+    <TodoList />
   </div>
 </template>
 
 <script>
-import Calender from '@/components/Calender.vue'
+import TodoList from "@/components/TodoList.vue"
 
 export default {
   name: "MyKinntore",
   components: {
-    Calender,
+    TodoList,
   },
 }
 </script>

@@ -39,12 +39,13 @@
     <div class="hansei">
       今日の感想：
       <input type="text" v-model="inputHansei" />
+      <button v-on:click="hozon" class="Hozon">保存</button>
     </div>
-    <button v-on:click="hozon" class="Hozon">保存</button>
   </div>
 </template>
 
 <script>
+import firebase from "firebase";
 export default {
   props: {
     youbi: String
@@ -78,8 +79,16 @@ export default {
     addTodo() {
       if (this.inputTodo !== "") {
         const todo = { text: this.inputTodo, isDone: false }
-        this.todos.push(todo)
-      }
+        //this.todos.push(todo)
+        firebase.firestore().collection("todos")
+        .add(todo)
+        .then(ref => {
+          this.todos.push({
+            id: ref.todo,
+            ...todo
+          });
+        });
+      };
     },
     deleteTodo(index) {
       this.todos.splice(index, 1)
@@ -94,7 +103,11 @@ export default {
         inputHansei: this.inputHansei,
       }
       this.menus.push(menu)
-      localStorage.menus = JSON.stringify(this.menus)
+      //localStorage.menus = JSON.stringify(this.menus)
+      localStorage.setItem("menus", JSON.stringify(this.menus))
+      const art = JSON.parse(localStorage.getItem("menus"))
+      this.menus = art
+
     },
   },
 }
