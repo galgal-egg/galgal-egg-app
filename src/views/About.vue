@@ -34,9 +34,9 @@
 export default {
   data: function () {
     return {
-      cm: 0,
-      kg: 0,
-      age: 0,
+      cm: "",
+      kg: "",
+      age: "",
       cal: 0,
       mL: 0,
     }
@@ -57,13 +57,19 @@ export default {
       )
     },
     one() {
-      return (this.mL -= 100)
+      if (this.mL > 0) {
+        return (this.mL -= 100)
+      }
     },
     three() {
-      return (this.mL -= 250)
+      if (this.mL > 0) {
+        return (this.mL -= 250)
+      }
     },
     five() {
-      return (this.mL -= 500)
+      if (this.mL > 0) {
+        return (this.mL -= 500)
+      }
     },
   },
 }
@@ -93,7 +99,7 @@ export default {
   position: absolute;
   font-weight: bold;
   letter-spacing: 2px;
-  color: #000000;
+  color: #706060;
   font-size: 20px;
   text-shadow: 0.25px 0.25px 0 #fff, -0.25px -0.25px 0 #fff,
     -0.25px 0.25px 0 #fff, 0.25px -0.25px 0 #fff, 0px 0.25px 0 #fff,
@@ -155,7 +161,7 @@ input {
   top: 50px;
   width: 80px;
   height: 80px;
-  background: ##eaeaea;
+  background: #eaeaea;
   border-radius: 0% 100% 50% 50%/ 0% 50% 50% 100%;
   transform: rotate(45deg) skew(3deg, 3deg);
 }
@@ -167,7 +173,12 @@ input {
 .water li {
   float: left;
   list-style: none;
-  width: 30%;
+  width: 23%;
   font-size: 28px;
+  margin-left: 32px;
+}
+
+input {
+  border: 1px solid #000;
 }
 </style>
