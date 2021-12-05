@@ -1,7 +1,8 @@
+import Vue from "vue"
 import firebase from "firebase"
 import "firebase/firestore"
+import "firebase/auth"
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBd41tkeLLH5DzEV_crBBSFfGRXzW-HQ0I",
   authDomain: "galagal-egg.firebaseapp.com",
@@ -13,3 +14,27 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
+
+const initialUserState = {
+  uid: "",
+  displayName: "",
+  photoURL: "",
+}
+const $auth = Vue.observable({
+  currentUser: { ...initialUserState },
+})
+firebase.auth().onAuthStateChanged((user) => {
+  let state
+  if (user) {
+    const { uid, displayName, photoURL } = user
+    state = {
+      uid,
+      displayName,
+      photoURL,
+    }
+  } else {
+    state = initialUserState
+  }
+  Object.assign($auth.currentUser, state)
+})
+Vue.prototype.$auth = $auth
