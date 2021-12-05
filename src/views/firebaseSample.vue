@@ -8,13 +8,30 @@
 import firebase from "firebase"
 export default {
   data() {
-    return {}
+    return {
+      name: "",
+    }
+  },
+  computed: {
+    user() {
+      return this.$auth.currentUser
+    },
   },
   methods: {
-    fire() {
-      firebase.firestore().collection("users").doc().add({
-        name: "Yuto",
-      })
+    async fire() {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("physical")
+        .add({
+          name: this.user.displayName,
+          uid: this.user.uid,
+          high: "200cm",
+        })
+      this.name = this.user.displayName
+      console.log(this.user.displayName)
+      console.log(this.user.uid)
     },
   },
 }
