@@ -14,39 +14,28 @@
       </select>
     </div>
     <div>
-      <div v-if="todos">
-        <div v-for="(todo, index) in todos" v-bind:key="index" class="todo">
-          <div class="todo__checkbox">
-            <input type="checkbox" v-model="todo.isDone" />
-          </div>
-          <div v-if="todo.isDone" class="todo__text todo__text--done">
-            {{ index }}:{{ todo.text }}
-          </div>
-          <div v-else class="todo__text">{{ index }}:{{ todo.text }}</div>
-          <button v-on:click="deleteTodo(index)" class="todo__delete">削除</button>
-        </div>
-      </div>
-    </div>
-    <div>
       <div>
         種目や回数を入力：
-        <input type="text" v-model="inputTodo" />
+        <input  v-model="inputTodo" />
         <button v-on:click="addTodo">追加</button>
       </div>
     </div>
-    <div class="hansei">
-      今日の感想：
-      <input type="text" v-model="inputHansei" />
+    <div>
+        <div v-for="(todo , key) in todos" v-bind:key="key" class = "todo">
+         <div class = "todo_checkbox">
+           <input type="checkbox" v-model="isComplete" v-on:click="updateTodo(todo,key)" />
+
+           {{ todo.name }}
+           <button v-on:click="removeTodo(key)">×</button>
+         </div>
+       </div>
     </div>
-    <button v-on:click="hozon" class="Hozon">保存</button>
   </div>
 </template>
 
 <script>
+import firebase from "firebase"
 export default {
-  props: {
-    youbi: String
-  },
   data() {
     return {
       selectedWorkout: "",
@@ -58,41 +47,38 @@ export default {
         { id: 5, name: "脚の日" },
       ],
       inputTodo: "",
-      todos: [],
       inputHansei: "",
-      menus: []
+      menus: [],
+      db: null,
+      todosRef: null,
+      todos: {}
     }
   },
-  created: function() {
-    const memo = localStorage.menus
-    this.menus = JSON.parse(memo)
-    for(let i = 0; i < this.menus.length; i++){
-      if(this.menus[i].youbi === this.youbi){
-        this.todos.push(this.menus[i].todos)
-      }
-    }
+  created(){
+    this.db = firebase.firestore()
+    this.todosRef = this.db.collection("todos")
+    this.todosRef.onSnapshot(querySnapshot => {
+      const obj = {}
+      querySnapshot.forEach(doc => {
+        obj[doc.id] = doc.date()
+      })
+      this.todos = obj
+    })
   },
   methods: {
     addTodo() {
-      if (this.inputTodo !== "") {
-        const todo = { text: this.inputTodo, isDone: false }
-        this.todos.push(todo)
-      }
+      if (this.inputTodo !== "") { return }
+        this.todosRef.add({
+          name: this.inputTodo,
+          isComplete: false,
+        })
     },
-    deleteTodo(index) {
-      this.todos.splice(index, 1)
-    },
-
-    hozon() {
-      //console.log(this.youbi)
-      const menu = {
-        youbi: this.youbi,
-        selectedWorkout: this.selectedWorkout,
-        todos: this.todos,
-        inputHansei: this.inputHansei,
-      }
-      this.menus.push(menu)
-      localStorage.menus = JSON.stringify(this.menus)
+    updateTodo(todo,key){
+        todo.isComplete = !todo.isComplete
+        this.todosRef.doc(key).update(todo)
+      },
+    removeTodo(key){
+      this.todosRef.doc(key).delete()
     },
   },
 }
