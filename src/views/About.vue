@@ -12,6 +12,7 @@
       <button @click="Women">女性</button>
       <p>基礎代謝{{ cal }}cal</p>
       <p>必要水分{{ mL }}mL</p>
+      <button v-on:click="fire">保存</button>
     </div>
     <div class="water">
       必要水分{{ mL }}mL
@@ -26,11 +27,26 @@
         <li>500mL</li>
       </ul>
     </div>
-    <div class="eatok">基礎代謝{{ cal }}cal</div>
+    <div class="eatok">
+      基礎代謝{{ cal }}cal
+      <div class="foods">
+        <p>
+          食べ物<input v-model="eatname" />カロリー<input v-model="eatcal" />cal
+        </p>
+        <div class="eatbutton">
+          <button v-on:click="calcal">追加</button>
+          <button v-on:click="kensaku">検索</button>
+        </div>
+      </div>
+      <div class="eatlist">
+        <p v-for="(food, index) in foods" :key="index">{{ food }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import firebase from "firebase"
 export default {
   data: function () {
     return {
@@ -39,7 +55,13 @@ export default {
       age: "",
       cal: 0,
       mL: 0,
+      foods: [],
     }
+  },
+  computed: {
+    user() {
+      return this.$auth.currentUser
+    },
   },
   methods: {
     Men() {
@@ -71,6 +93,67 @@ export default {
         return (this.mL -= 500)
       }
     },
+    async fire() {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.user.displayName)
+        .set({
+          name: this.user.displayName,
+          age: this.age,
+          cm: this.cm,
+          kg: this.kg,
+          uid: this.user.uid,
+        })
+      this.name = this.user.displayName
+      console.log(this.user.displayName)
+      console.log(this.age)
+      console.log(this.cm)
+      console.log(this.kg)
+      console.log(this.user.uid)
+    },
+    async calcal() {
+      await firebase
+        .firestore()
+        .collection("foodandcal")
+        .doc(this.eatname)
+        .set({
+          food: this.eatname,
+          cal: this.eatcal,
+        })
+      this.name = this.user.displayName
+      console.log(this.user.displayName)
+      console.log(this.eatname)
+      console.log(this.eatcal)
+    },
+    kensaku() {
+      firebase
+        .firestore()
+        .collection("foodandcal")
+        .where("food", "==", this.eatname)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            this.foods.push(doc.data().food, doc.data().cal + "cal")
+          })
+        })
+        .then(() => {
+          console.log(this.foods)
+        })
+    },
+    created() {
+      firebase
+        .firestore()
+        .collection("users")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            this.cm.push(doc.data().cm)
+            this.age.push(doc.date().age)
+            this.kg.push(doc.date().kg)
+          })
+        })
+    },
   },
 }
 </script>
@@ -90,11 +173,10 @@ export default {
 }
 
 .mybody {
-  height: 600px;
+  height: 650px;
   width: 500px;
   background-color: #dd6e42;
   margin: 0px 0px 0px 100px;
-  padding: 30px 0px;
   border-radius: 70px;
   position: absolute;
   font-weight: bold;
@@ -131,54 +213,83 @@ input {
 }
 
 .water {
-  width: 650px;
-  height: 240px;
+  width: 680px;
+  height: 200px;
   background-color: #4f6d7a;
   float: right;
   margin: 0px 100px 0px 0px;
   border-radius: 70px;
   color: #faf4e5;
   font-weight: bold;
-  font-size: 35px;
+  font-size: 30px;
   padding-top: 20px;
 }
 
-.eatok {
-  width: 650px;
-  height: 330px;
+.eatbutton {
   float: right;
-  margin: 45px 100px 0px 0px;
+  margin: 10px 50px 0px 0px;
+}
+.eatok {
+  width: 680px;
+  height: 390px;
+  float: right;
+  margin: 20px 100px 0px 0px;
   background-color: #eaeaea;
   border-radius: 70px;
   font-weight: bold;
-  font-size: 35px;
+  font-size: 30px;
   padding-top: 20px;
+}
+.eatlist {
+  font-size: 20px;
+  line-height: 10px;
+  width: 500px;
+  height: 300px;
+  margin: 0px auto;
+}
+.eatlist p {
+  float: left;
+  margin: 20px 0px 0px 10px;
+}
+.foods p {
+  font-size: 20px;
+  float: left;
+  margin-left: 80px;
+}
+
+.foods {
+  width: 680px;
+  height: 70px;
 }
 
 .ame button {
-  margin: -15px 30px;
+  margin: -30px 30px;
   position: relative;
   top: 50px;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background: #eaeaea;
   border-radius: 0% 100% 50% 50%/ 0% 50% 50% 100%;
   transform: rotate(45deg) skew(3deg, 3deg);
 }
 
 .water ul {
-  width: 500px;
-  margin: 50px auto;
+  width: 420px;
+  height: 200px;
+  margin: 55px auto;
 }
 .water li {
   float: left;
   list-style: none;
   width: 23%;
-  font-size: 28px;
-  margin-left: 32px;
+  font-size: 25px;
+  margin-left: 26px;
 }
 
-input {
+.foods input {
   border: 1px solid #000;
+  font-size: 20px;
+  font-weight: bold;
+  color: #303030;
 }
 </style>

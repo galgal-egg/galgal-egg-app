@@ -1,5 +1,6 @@
 <template>
   <div>
+    <input type="text" />
     <button v-on:click="fire">ボタン</button>
   </div>
 </template>
@@ -27,7 +28,7 @@ export default {
         .add({
           name: this.user.displayName,
           uid: this.user.uid,
-          high: "200cm",
+
         })
       this.name = this.user.displayName
       console.log(this.user.displayName)

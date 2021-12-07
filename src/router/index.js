@@ -1,6 +1,5 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
-import Home from "../views/Home.vue"
 import beforeSignIn from "../views/beforeSignIn.vue"
 import afterSignIn from "../views/afterSignIn.vue"
 import About from "../views/About.vue"
@@ -10,11 +9,6 @@ import firebase from "firebase"
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
   {
     path: "/about",
     name: "About",
