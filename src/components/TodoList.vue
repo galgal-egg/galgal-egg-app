@@ -1,7 +1,9 @@
 <template>
   <div class="todolist">
+    <div v-show="muneosusumeON">
+      
+    </div>
     <div>
-      筋トレリスト
       <select v-model="selectedWorkout">
         <option disabled value="">今日はどこの日？</option>
         <option
@@ -15,21 +17,24 @@
     </div>
     <div>
       <div>
-        種目や回数を入力：
-        <input  v-model="inputTodo" />
-        <button v-on:click="addTodo">追加</button>
+        今日やること：
+        <input  v-model="inputTodo" placeholder="例：腕立て伏せ 10回 3set"/>
+        <button v-on:click="addTodo()">追加</button>
       </div>
     </div>
     <div>
         <div v-for="(todo , key) in todos" v-bind:key="key" class = "todo">
          <div class = "todo_checkbox">
-           <input type="checkbox" v-model="isComplete" v-on:click="updateTodo(todo,key)" />
-
+           <input type="checkbox" v-model="todo.isComplete" v-on:click="updateTodo(todo,key)" />
            {{ todo.name }}
            <button v-on:click="removeTodo(key)">×</button>
          </div>
        </div>
     </div>
+    <div>
+      今日の感想
+    </div>
+    <textarea class="kannsou" v-model="kannsou" cols="50" rows="10"></textarea>
   </div>
 </template>
 
@@ -47,7 +52,7 @@ export default {
         { id: 5, name: "脚の日" },
       ],
       inputTodo: "",
-      inputHansei: "",
+      kannsou: "",
       menus: [],
       db: null,
       todosRef: null,
@@ -60,15 +65,15 @@ export default {
     this.todosRef.onSnapshot(querySnapshot => {
       const obj = {}
       querySnapshot.forEach(doc => {
-        obj[doc.id] = doc.date()
+        obj[doc.id] = doc.data()
       })
       this.todos = obj
     })
   },
   methods: {
     addTodo() {
-      if (this.inputTodo !== "") { return }
-        this.todosRef.add({
+      if (this.inputTodo === ""){ return }
+      this.todosRef.add({
           name: this.inputTodo,
           isComplete: false,
         })
@@ -101,28 +106,8 @@ export default {
   border-radius: 5px;
 }
 
-.todo:hover {
-  color: white;
-  background-color: #b23b61;
-}
-
-.todo__text {
-  margin-left: 2rem;
-  text-align: left;
-}
-
-.todo__text--done {
-  text-decoration-line: line-through;
-}
-
-.todo__delete {
-  margin-left: 2rem;
-  padding: 0.5rem 0.5rem;
-}
-
-.todo__delete:hover {
-  margin-left: 2rem;
-  background-color: #b2ae3b;
-  border-radius: 5px;
+.kannsou {
+  padding:30px 50px;
+  overflow-wrap: anywhere;
 }
 </style>
