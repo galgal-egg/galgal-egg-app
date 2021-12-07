@@ -1,7 +1,12 @@
 <template>
   <div class="todolist">
-    <div v-show="muneosusumeON">
-      
+    <div class="osusume">
+      <div v-show="muneosusumeON">
+         胸筋のトレーニングのおすすめの種目はダンベルフライです！
+      </div>
+     <button v-on:click="makeMO()">
+       胸筋
+     </button>
     </div>
     <div>
       <select v-model="selectedWorkout">
@@ -43,6 +48,7 @@ import firebase from "firebase"
 export default {
   data() {
     return {
+      muneosusumeON: false,
       selectedWorkout: "",
       optionWorkout: [
         { id: 1, name: "胸の日" },
@@ -71,6 +77,9 @@ export default {
     })
   },
   methods: {
+    makeMO(){
+      this.muneosusumeON = true
+    },
     addTodo() {
       if (this.inputTodo === ""){ return }
       this.todosRef.add({
