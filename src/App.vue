@@ -1,12 +1,19 @@
 <template>
   <div id="app">
     <div id="nav">
+<<<<<<< HEAD
       <router-link to="/about">About</router-link>|
       <router-link to="/beforeSignIn">before</router-link>|
       <router-link to="/afterSignIn">after</router-link>|
       <router-link to="/fire">firebase</router-link>|
       <router-link to="/fire">firebase</router-link>|
       <router-link to="/mykinntore">筋トレ</router-link>
+=======
+      <router-link to="/about">体調管理</router-link>|
+      <router-link to="/beforeSignIn">before</router-link>|
+      <router-link to="/afterSignIn">できない</router-link>|
+      <router-link to="/fire">firebase</router-link>
+>>>>>>> 987607cec72735188f60059ac1873062ac47a277
       <button v-if="isLoggin" v-on:click="logOut">ログアウト</button>
       <button v-else v-on:click="logIn">ログイン</button>
     </div>

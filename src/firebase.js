@@ -38,4 +38,3 @@ firebase.auth().onAuthStateChanged((user) => {
   Object.assign($auth.currentUser, state)
 })
 Vue.prototype.$auth = $auth
-
