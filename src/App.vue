@@ -1,16 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/about">About</router-link>|
       <router-link to="/beforeSignIn">before</router-link>|
       <router-link to="/afterSignIn">after</router-link>|
       <router-link to="/fire">firebase</router-link>|
-      <router-link to="/fire">firebase</router-link>|
-      <router-link to="/mykinntore">筋トレ</router-link>
+      <router-link to="/mykinntore">筋トレ</router-link>|
       <router-link to="/about">体調管理</router-link>|
-      <router-link to="/beforeSignIn">before</router-link>|
-      <router-link to="/afterSignIn">できない</router-link>|
-      <router-link to="/fire">firebase</router-link>
+      <router-link to="/calendar">カレンダー</router-link>|
       <button v-if="isLoggin" v-on:click="logOut">ログアウト</button>
       <button v-else v-on:click="logIn">ログイン</button>
     </div>
