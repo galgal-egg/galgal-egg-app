@@ -6,17 +6,12 @@ import About from "../views/About.vue"
 import fire from "../views/firebaseSample.vue"
 import firebase from "firebase"
 import mykinntore from "../views/MyKinntore.vue"
-import calendar2 from "../views/calendar2.vue"
+
 
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: "/calendar",
-    name: "calendar",
-    component: calendar2
-  },
   {
     path: "/about",
     name: "About",

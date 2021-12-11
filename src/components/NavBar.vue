@@ -6,7 +6,6 @@
       <router-link to="/beforeSignIn">before</router-link>|
       <router-link to="/afterSignIn">after</router-link>|
       <router-link to="/fire">firebase</router-link>|
-      <router-link to="/fire">firebase</router-link>|
       <router-link to="/mykinntore">筋トレ</router-link>
     </div>
   </div>
@@ -18,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  background-color: black;
+  background-color: #dd6e42;
 }
 
 .nav__items {

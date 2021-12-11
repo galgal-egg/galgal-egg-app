@@ -3,7 +3,7 @@
     <h1>My Training</h1>
     <div class="OS">部位ごとのアプリ製作者のおすすめを紹介します!!</div>
     <div class="Mosusume">
-      <div class="muneS" v-show="muneosusumeON">
+      <div class="muneS" v-if="muneosusumeON" >
         <bar>男性におすすめのトレーニング種目はダンベルフライです!</bar>
         <bar>胸筋にストレッチの不可をかけることで筋肥大効果up!!!</bar>
          <img alt="Vue logo " src="../assets/dumbelfry.jpg" style="height:25%; width:25%"/>
@@ -14,7 +14,7 @@
     </div>
     <div class="Sosusume">
       <div class="senakaS" v-show="senakaosusumeON">
-        <bar>男性におすすめのトレーニング種目はベントオーバーローイングです！</bar>
+        <bar>背中のおすすめのトレーニング種目はベントオーバーローイングです！</bar>
         <bar>この種目は背中を分厚くさせるのにもってこいです!!!</bar>
          <img alt="Vue logo " src="../assets/bento.jpg" style="height:25%; width:25%"/>
       </div>
@@ -34,7 +34,7 @@
     </div>
     <div class="Uosusume">
       <div class="udeS" v-show="udeosusumeON">
-        <bar>男性におすすめの種目はインクラインダンベルカールです！</bar>
+        <bar>おすすめの種目はインクラインダンベルカールです！</bar>
         <bar>可動域を広くとれるのでストレッチ効果を受けやすいです!!!</bar>
          <img alt="Vue logo " src="../assets/udem.jpg" style="height:25%; width:25%"/> 
       </div>
@@ -113,6 +113,11 @@ export default {
       todos: {}
     }
   },
+   computed: {
+    user() {
+      return this.$auth.currentUser
+    },
+  },
   created(){
     this.db = firebase.firestore()
     this.todosRef = this.db.collection("todos")
@@ -123,30 +128,73 @@ export default {
       })
       this.todos = obj
     })
-
   },
   methods: {
     makeMO(){
-      this.muneosusumeON = true
+      if(this.muneosusumeON){
+        this.muneosusumeON = false
+      }
+      else{
+        this.muneosusumeON = true
+      }
     },
     makeSO(){
-      this.senakaosusumeON = true
+      if(this.senakaosusumeON){
+        this.senakaosusumeON = false
+      }
+      else{
+        this.senakaosusumeON = true
+      }
     },
     makeAO(){
-      this.asiosusumeON = true
+      if(this.asiosusumeON){
+        this.asiosusumeON = false
+      }
+      else{
+        this.asiosusumeON = true
+      }
     },
     makeUO(){
-      this.udeosusumeON = true
+      if(this.udeosusumeON){
+        this.udeosusumeON = false
+      }
+      else{
+        this.udeosusumeON = true
+      }
     },
     makeKO(){
-      this.kataosusumeON = true
+      if(this.kataosusumeON){
+        this.kataosusumeON = false
+      }
+      else{
+        this.kataosusumeON = true
+      }
     },
-    addTodo() {
-      if (this.inputTodo === ""){ return }
-      this.todosRef.add({
+    async addTodo() {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("todos")
+        .add({
           name: this.inputTodo,
           isComplete: false,
         })
+      this.inputTodo = this.user.name
+    // this.db = firebase.firestore()
+    // this.todosRef = this.db.collection("users")
+    // this.todosRef.onSnapshot(querySnapshot => {
+    //   const obj = {}
+    //   querySnapshot.forEach(doc => {
+    //     obj[doc.id] = doc.data()
+    //   })
+    //   this.todos = obj
+    // })
+    //   if (this.inputTodo === ""){ return }
+    //   this.todosRef.add({
+    //       name: this.inputTodo,
+    //       isComplete: false,
+    //     })
     },
     updateTodo(todo,key){
         todo.isComplete = !todo.isComplete
