@@ -1,10 +1,9 @@
 <template>
   <div id="app">
     <div id="nav">
+      <router-link to="/stamp">スタンプラリー</router-link>|
       <router-link to="/about">体調管理</router-link>|
-      <router-link to="/beforeSignIn">before</router-link>|
-      <router-link to="/afterSignIn">できない</router-link>|
-      <router-link to="/fire">firebase</router-link>
+      <router-link to="/Mykinntore">筋トレ</router-link>
       <button v-if="isLoggin" v-on:click="logOut">ログアウト</button>
       <button v-else v-on:click="logIn">ログイン</button>
     </div>

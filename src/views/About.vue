@@ -2,7 +2,7 @@
   <div class="body">
     <h1>MY HEALTH CARE</h1>
     <div class="mybody">
-      <div class="photo">
+      <div class="photo" @click="random">
         <img alt="Vue logo" src="../assets/women.png" />
       </div>
       <p>身長<input v-model="cm" />cm</p>
@@ -56,6 +56,7 @@ export default {
       cal: 0,
       mL: 0,
       foods: [],
+      calsam: 0,
     }
   },
   computed: {
@@ -139,19 +140,6 @@ export default {
         })
         .then(() => {
           console.log(this.foods)
-        })
-    },
-    created() {
-      firebase
-        .firestore()
-        .collection("users")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            this.cm.push(doc.data().cm)
-            this.age.push(doc.date().age)
-            this.kg.push(doc.date().kg)
-          })
         })
     },
   },
@@ -241,7 +229,7 @@ input {
   padding-top: 20px;
 }
 .eatlist {
-  font-size: 20px;
+  font-size: 23px;
   line-height: 10px;
   width: 500px;
   height: 300px;
