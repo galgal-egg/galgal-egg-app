@@ -16,10 +16,8 @@
 <script>
 import firebase from "firebase"
 
-
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       isLoggin: false,
