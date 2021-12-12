@@ -4,6 +4,7 @@ import afterSignIn from "../views/stamp.vue"
 import About from "../views/About.vue"
 import fire from "../views/firebaseSample.vue"
 import firebase from "firebase"
+import stamp from "../views/stamp.vue"
 import mykinntore from "../views/MyKinntore.vue"
 import beforeSignIn from "../views/beforeSignIn.vue"
 
@@ -24,6 +25,11 @@ const routes = [
     path: "/afterSignIn",
     name: "afterSignIn",
     component: afterSignIn,
+  },
+  {
+    path: "/beforeSignIn",
+    name: "beforeSignIn",
+    component: beforeSignIn,
   },
   {
     path: "/fire",

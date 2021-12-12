@@ -108,7 +108,7 @@ export default {
 .text-center {
   width: 100vw;
   height: 100vh;
-  background-color: #dd6e42d7;
+  background-color: #dd6e42ea;
   position: absolute;
 }
 
