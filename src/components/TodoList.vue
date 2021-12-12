@@ -3,8 +3,8 @@
     <h1>My Training</h1>
     <div class="OS">部位ごとのアプリ製作者のおすすめを紹介します!!</div>
     <div class="Mosusume">
-      <div class="muneS" v-if="muneosusumeON" >
-        <bar>男性におすすめのトレーニング種目はダンベルフライです!</bar>
+      <div class="muneS" v-show="muneosusumeON" >
+        <bar>おすすめのトレーニング種目はダンベルフライです!</bar>
         <bar>胸筋にストレッチの不可をかけることで筋肥大効果up!!!</bar>
          <img alt="Vue logo " src="../assets/dumbelfry.jpg" style="height:25%; width:25%"/>
       </div>
@@ -14,9 +14,10 @@
     </div>
     <div class="Sosusume">
       <div class="senakaS" v-show="senakaosusumeON">
-        <bar>背中のおすすめのトレーニング種目はベントオーバーローイングです！</bar>
-        <bar>この種目は背中を分厚くさせるのにもってこいです!!!</bar>
-         <img alt="Vue logo " src="../assets/bento.jpg" style="height:25%; width:25%"/>
+        <bar>背中のおすすめのトレーニング種目はラットプルダウンです!</bar>
+        <bar>この種目は背中を広くさせるのにもってこいです!!!</bar>
+        <bar>背中を広くさせることでウエストを細く見せることができます!</bar>
+         <img alt="Vue logo " src="../assets/ratpull.jpg" style="height:25%; width:25%"/>
       </div>
      <button class="Sbutton" v-on:click="makeSO()">
        背中トレーニング
@@ -24,7 +25,7 @@
     </div>
     <div class="Aosusume">
       <div class="asiS" v-show="asiosusumeON">
-        <bar>男性、女性ともにおすすめの種目はスクワットです！</bar>
+        <bar>おすすめの種目はスクワットです!</bar>
         <bar>脚だけでなくお尻の筋肉にも効果ありです!!!</bar>
          <img alt="Vue logo " src="../assets/asiw.jpg" style="height:25%; width:25%"/> <img alt="Vue logo " src="../assets/asim.jpg" style="height:25%; width:25%"/>
       </div>
@@ -34,9 +35,9 @@
     </div>
     <div class="Uosusume">
       <div class="udeS" v-show="udeosusumeON">
-        <bar>おすすめの種目はインクラインダンベルカールです！</bar>
-        <bar>可動域を広くとれるのでストレッチ効果を受けやすいです!!!</bar>
-         <img alt="Vue logo " src="../assets/udem.jpg" style="height:25%; width:25%"/> 
+        <bar>腕トレーニングのおすすめの種目はケーブルプッシュダウンです!</bar>
+        <bar>この種目は二の腕を引き締めるのに効果的です!!!</bar>
+         <img alt="Vue logo " src="../assets/cablepush.jpg" style="height:25%; width:25%"/> 
       </div>
      <button class="Ubutton" v-on:click="makeUO()">
        腕トレーニング
@@ -44,7 +45,7 @@
     </div>
     <div class="Kosusume">
       <div class="kataS" v-show="kataosusumeON">
-        <bar>男性、女性ともにおすすめの種目はサイドレイズです！</bar>
+        <bar>おすすめの種目はサイドレイズです!</bar>
         <bar>この種目をやることで形を良くすることができます!!!</bar>
          <img alt="Vue logo " src="../assets/katam.jpg" style="height:25%; width:25%"/>  <img alt="Vue logo " src="../assets/kataw.jpg" style="height:25%; width:25%"/> 
       </div>
@@ -76,7 +77,7 @@
          <div class = "todo_checkbox">
            <input type="checkbox" v-model="todo.isComplete" v-on:click="updateTodo(todo,key)" />
            {{ todo.name }}
-           <button v-on:click="removeTodo(key)">×</button>
+           <button v-on:click="removeTodo(todo.id)">×</button>
          </div>
        </div>
     </div>
@@ -110,7 +111,7 @@ export default {
       menus: [],
       db: null,
       todosRef: null,
-      todos: {}
+      todos: []
     }
   },
    computed: {
@@ -119,14 +120,20 @@ export default {
     },
   },
   created(){
-    this.db = firebase.firestore()
-    this.todosRef = this.db.collection("todos")
-    this.todosRef.onSnapshot(querySnapshot => {
-      const obj = {}
-      querySnapshot.forEach(doc => {
-        obj[doc.id] = doc.data()
+    this.todos.splice(0)
+    const db = firebase.firestore()
+    db.collection("users").doc(this.user.uid)
+    .collection("todos")
+    .get()
+    .then(( snapshot ) => {
+      snapshot.docs.forEach((doc) => {
+        this.todos.push({
+          id: doc.id,
+          ...doc.data()
+        })
+
       })
-      this.todos = obj
+      console.log(this.todos)
     })
   },
   methods: {
@@ -180,28 +187,22 @@ export default {
           name: this.inputTodo,
           isComplete: false,
         })
+      window.location.reload();
       this.inputTodo = this.user.name
-    // this.db = firebase.firestore()
-    // this.todosRef = this.db.collection("users")
-    // this.todosRef.onSnapshot(querySnapshot => {
-    //   const obj = {}
-    //   querySnapshot.forEach(doc => {
-    //     obj[doc.id] = doc.data()
-    //   })
-    //   this.todos = obj
-    // })
-    //   if (this.inputTodo === ""){ return }
-    //   this.todosRef.add({
-    //       name: this.inputTodo,
-    //       isComplete: false,
-    //     })
     },
     updateTodo(todo,key){
         todo.isComplete = !todo.isComplete
-        this.todosRef.doc(key).update(todo)
+        this.db.doc(key).update(todo)
       },
-    removeTodo(key){
-      this.todosRef.doc(key).delete()
+    async removeTodo(id){
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.user.uid)
+        .collection("todos")
+        .doc(id)
+        .delete()
+         window.location.reload();
     },
   },
 }

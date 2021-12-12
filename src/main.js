@@ -7,8 +7,6 @@ import VCalendar from "v-calendar"
 Vue.config.productionTip = false
 Vue.use(VCalendar)
 
-Vue.config.productionTip = false
-
 new Vue({
   router,
   render: (h) => h(App),
