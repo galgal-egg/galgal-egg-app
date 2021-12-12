@@ -5,6 +5,7 @@ import About from "../views/About.vue"
 import fire from "../views/firebaseSample.vue"
 import firebase from "firebase"
 import stamp from "../views/stamp.vue"
+import beforeSignIn from "../views/beforeSignIn.vue"
 
 Vue.use(VueRouter)
 
@@ -18,6 +19,11 @@ const routes = [
     path: "/afterSignIn",
     name: "afterSignIn",
     component: afterSignIn,
+  },
+  {
+    path: "/beforeSignIn",
+    name: "beforeSignIn",
+    component: beforeSignIn,
   },
   {
     path: "/fire",

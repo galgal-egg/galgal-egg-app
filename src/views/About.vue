@@ -2,7 +2,7 @@
   <div class="body">
     <h1>MY HEALTH CARE</h1>
     <div class="mybody">
-      <div class="photo" @click="random">
+      <div class="photo">
         <img alt="Vue logo" src="../assets/women.png" />
       </div>
       <p>身長<input v-model="cm" />cm</p>
@@ -10,9 +10,14 @@
       <p>年齢<input v-model="age" />歳</p>
       <button @click="Men">男性</button>
       <button @click="Women">女性</button>
-      <p>基礎代謝{{ cal }}cal</p>
+      <p>基礎代謝{{ cal }}kcal</p>
       <p>必要水分{{ mL }}mL</p>
-      <button v-on:click="fire">保存</button>
+      <div class="syouhi">
+        運動量
+        <button @click="syou">少ない</button>
+        <button @click="tyu">普通</button>
+        <button @click="dai">多い</button>
+      </div>
     </div>
     <div class="water">
       必要水分{{ mL }}mL
@@ -28,18 +33,21 @@
       </ul>
     </div>
     <div class="eatok">
-      基礎代謝{{ cal }}cal
+      消費カロリー{{ kcal }}kcal <br />摂取カロリー{{ sessyu }}kcal
       <div class="foods">
         <p>
-          食べ物<input v-model="eatname" />カロリー<input v-model="eatcal" />cal
+          食べ物<input v-model="eatname" />カロリー
+          <input type="number" v-model.number="eatcal" />kcal
         </p>
         <div class="eatbutton">
-          <button v-on:click="calcal">追加</button>
+          <button v-on:click="calcal">保存</button>
           <button v-on:click="kensaku">検索</button>
         </div>
       </div>
       <div class="eatlist">
-        <p v-for="(food, index) in foods" :key="index">{{ food }}</p>
+        <p v-for="food in foods" :key="food">
+          ・{{ food.food }} {{ food.cal }}kcal
+        </p>
       </div>
     </div>
   </div>
@@ -56,7 +64,8 @@ export default {
       cal: 0,
       mL: 0,
       foods: [],
-      calsam: 0,
+      kcal: 0,
+      sessyu: 0,
     }
   },
   computed: {
@@ -93,6 +102,15 @@ export default {
       if (this.mL > 0) {
         return (this.mL -= 500)
       }
+    },
+    dai() {
+      return (this.kcal = this.cal * 2)
+    },
+    tyu() {
+      return (this.kcal = this.cal * 1.75)
+    },
+    syou() {
+      return (this.kcal = this.cal * 1.5)
     },
     async fire() {
       await firebase
@@ -135,11 +153,17 @@ export default {
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            this.foods.push(doc.data().food, doc.data().cal + "cal")
+            this.foods.push({
+              ...doc.data(),
+            })
+            console.log(typeof doc.data().cal)
+            Number(this.sessyu)
+            let getcal = doc.data().cal
+            Number.parseInt(getcal)
+            console.log(typeof getcal)
+            console.log(typeof this.sessyu)
+            this.sessyu = this.sessyu + 1 * getcal
           })
-        })
-        .then(() => {
-          console.log(this.foods)
         })
     },
   },
@@ -279,5 +303,9 @@ input {
   font-size: 20px;
   font-weight: bold;
   color: #303030;
+}
+
+.syouhi button {
+  margin: 0px 3px;
 }
 </style>

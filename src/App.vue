@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
+      <router-link to="/beforeSignIn">TOP|</router-link>
       <router-link to="/stamp">スタンプラリー</router-link>|
       <router-link to="/about">体調管理</router-link>|
       <router-link to="/Mykinntore">筋トレ</router-link>
