@@ -1,18 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-
-      <!-- <router-link to="/beforeSignIn">before</router-link>|
-      <router-link to="/afterSignIn">after</router-link>|
+      <router-link to="/about">体調管理</router-link>|
       <router-link to="/fire">firebase</router-link>|
       <router-link to="/mykinntore">筋トレ</router-link>|
-      <router-link to="/about">体調管理</router-link>| -->
-      <NavBar />
-
-      <!-- <router-link to="/stamp">スタンプラリー</router-link>|
-      <router-link to="/about">体調管理</router-link>|
-      <router-link to="/Mykinntore">筋トレ</router-link> -->
-
+      <router-link to="/afterSignIn">calendar</router-link>|
+      <router-link to="/beforeSignIn">TOP|</router-link>
       <button v-if="isLoggin" v-on:click="logOut">ログアウト</button>
       <button v-else v-on:click="logIn">ログイン</button>
     </div>
@@ -22,11 +15,10 @@
 
 <script>
 import firebase from "firebase"
-import NavBar from "@/components/NavBar.vue"
+
 
 export default {
   components: {
-    NavBar,
   },
   data() {
     return {

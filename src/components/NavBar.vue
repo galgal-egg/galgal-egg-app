@@ -1,13 +1,11 @@
 <template>
   <div class="nav__bar">
-    <router-link to="/" class="nav__logo nav__link">Home</router-link>
     <div class="nav__items">
      <router-link to="/about">体調管理</router-link>|
-      <!-- <router-link to="/beforeSignIn">before</router-link>|
-      <router-link to="/afterSignIn">after</router-link>| -->
       <router-link to="/fire">firebase</router-link>|
       <router-link to="/mykinntore">筋トレ</router-link>|
-      <router-link to="/stamp">スタンプラリー</router-link>|
+      <router-link to="/afterSignIn">calendar</router-link>|
+      <router-link to="/beforeSignIn">TOP|</router-link>
     </div>
   </div>
 </template>
