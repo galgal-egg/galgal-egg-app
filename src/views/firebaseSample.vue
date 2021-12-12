@@ -28,7 +28,7 @@ export default {
         .add({
           name: this.user.displayName,
           uid: this.user.uid,
-          high: "222acm",
+
         })
       this.name = this.user.displayName
       console.log(this.user.displayName)

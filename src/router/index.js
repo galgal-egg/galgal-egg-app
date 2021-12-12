@@ -5,11 +5,17 @@ import About from "../views/About.vue"
 import fire from "../views/firebaseSample.vue"
 import firebase from "firebase"
 import stamp from "../views/stamp.vue"
+import mykinntore from "../views/MyKinntore.vue"
 import beforeSignIn from "../views/beforeSignIn.vue"
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: "/beforeSignIn",
+    name: "beforeSignIn",
+    component: beforeSignIn,
+  },
   {
     path: "/about",
     name: "About",
@@ -31,10 +37,12 @@ const routes = [
     component: fire,
   },
   {
-    path: "/stamp",
-    name: "stamp",
-    component: stamp,
+    path: "/mykinntore",
+    name: "mykinntore",
+    component: mykinntore,
   },
+    
+
 ]
 
 const router = new VueRouter({

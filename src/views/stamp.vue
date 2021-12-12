@@ -1,6 +1,6 @@
 <template>
   <div class="text-center section">
-    <h1 class="h1">STAMP RALLY</h1>
+    <h1 class="h1">Diary Calendar</h1>
     <p class="text-lg font-medium text-gray-600 mb-6"></p>
     <v-calendar
       class="custom-calendar max-w-full"
@@ -9,18 +9,23 @@
       disable-page-swipe
       is-expanded
     >
-      <template v-slot:day-content="{ day, attributes }">
+      <template v-slot:day-content="{ day, attributes,}">
         <div class="flex flex-col h-full z-10 overflow-hidden">
           <span class="day-label text-sm text-gray-900">{{ day.day }}</span>
-          <div class="flex-grow overflow-y-auto overflow-x-auto">
-            <button v-on:click="addTodo(day)">今日の自分は？</button>
+          <div>
+           <!-- <p
+              v-for="b in but"
+              :key="b.key"
+            > -->
+            <button  class="diary" v-on:click="addTodo(day)" >Diary</button>
             <p
               v-for="attr in attributes"
               :key="attr.key"
               class="text-xs leading-tight rounded-sm p-1 mt-0 mb-1"
               :class="attr.customData.class"
             >
-              <textarea />
+             <textarea v-model="attr.customData.title" />
+              <!-- {{ attr.customData.title }} -->
             </p>
           </div>
         </div>
@@ -29,17 +34,42 @@
   </div>
 </template>
 <script>
+//import firebase from "firebase"
 export default {
   data() {
     return {
+     // atrON: true,
       masks: {
         weekdays: "WWW",
       },
       attributes: [],
     }
   },
+  // created(){
+  //   this.todos.splice(0)
+  //   const db = firebase.firestore()
+  //   db.collection("users").doc(this.user.uid)
+  //   .collection("art")
+  //   .get()
+  //   .then(( snapshot ) => {
+  //     snapshot.docs.forEach((doc) => {
+  //       this.attributes.push({
+  //         id: doc.id,
+  //         ...doc.data()
+  //       })
+
+  //     })
+  //     console.log(this.attributes)
+  //   })
+  // },
   methods: {
     addTodo(day) {
+      // if(this.atrON){
+      //   this.atrON = false
+      // }
+      // else{
+      //   this.atrON = true
+      // }
       const todo = {
         key: day.id,
         customData: {
@@ -53,10 +83,28 @@ export default {
       console.log(day)
     },
   },
+  watch: {
+    attributes: {
+      handler: function () {
+        localStorage.setItem("attributes", JSON.stringify(this.attributes))
+      },
+      deep: true,
+    },
+  },
+  created: function () {
+    if (localStorage.getItem("attributes")) {
+      const art = JSON.parse(localStorage.getItem("attributes"))
+      this.attributes = art
+    }
+  }
 }
 </script>
 
 <style scoped>
+.diary{
+  background-color: #dd6e42d7;
+  border-radius: 10px;
+}
 .text-center {
   width: 100vw;
   height: 100vh;
